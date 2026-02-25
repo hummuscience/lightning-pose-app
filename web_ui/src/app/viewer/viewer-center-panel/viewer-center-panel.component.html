@@ -29,7 +29,9 @@
               >
             </div>
             <app-zoomable-content
-              [ngClass]="widgetModels().length === 1 ? 'flex-1 w-full' : '!h-[250px] !w-[250px]'"
+              [ngClass]="widgetModels().length === 1 ? 'flex-1 w-full' : ''"
+              [style.height.px]="widgetModels().length === 1 ? null : tileSizePx()"
+              [style.width.px]="widgetModels().length === 1 ? null : tileSizePx()"
             >
               <app-video-tile #content [src]="w.videoSrc" class="relative">
                 <app-keypoint-container
