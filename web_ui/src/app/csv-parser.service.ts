@@ -83,4 +83,46 @@ export class CsvParserService {
     //return ndarray(flatData, [numFrames, numBodyParts, 2]);
     return new dfd.DataFrame(data, { index });
   }
+
+  /**
+   * Parses a flat metric CSV (single header row with keypoint names, numeric data rows).
+   * Used for companion metric files like *_temporal_norm.csv and *_pca_singleview_error.csv.
+   */
+  parseSimpleMetricFile(csvString: string): dfd.DataFrame {
+    const parseOutput: ParseResult<string[]> = Papa.parse(csvString.trim(), {
+      dynamicTyping: false,
+      skipEmptyLines: true,
+    });
+
+    if (parseOutput.errors.length > 0) {
+      console.error('PapaParse errors:', parseOutput.errors);
+      return new dfd.DataFrame();
+    }
+
+    const allRows = parseOutput.data;
+    if (allRows.length < 2) {
+      console.error('Metric CSV must have at least 1 header line and 1 data line.');
+      return new dfd.DataFrame();
+    }
+
+    const headers = allRows[0];
+    const dataRows = allRows.slice(1);
+    const data = {} as Record<string, number[]>;
+
+    for (const col of headers) {
+      if (col === 'set' || col === '') continue;
+      data[col] = new Array(dataRows.length).fill(NaN) as number[];
+    }
+
+    dataRows.forEach((row, rowIndex) => {
+      for (let i = 0; i < headers.length; i++) {
+        const col = headers[i];
+        if (col === 'set' || col === '') continue;
+        const value = row[i] !== undefined ? parseFloat(row[i]) : NaN;
+        data[col]![rowIndex] = value;
+      }
+    });
+
+    return new dfd.DataFrame(data);
+  }
 }
