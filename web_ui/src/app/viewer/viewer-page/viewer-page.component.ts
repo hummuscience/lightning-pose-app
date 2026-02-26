@@ -246,7 +246,7 @@ export class ViewerPageComponent implements OnInit {
         this.isExtractFramesLoading.set(false);
       });
   }
-  viewerCenterPanel = viewChild<ViewerCenterPanelComponent>(
+  private viewerCenterPanel = viewChild<ViewerCenterPanelComponent>(
     ViewerCenterPanelComponent,
   );
   private toExtractFramesRequest(): ExtractFramesRequest {
@@ -279,5 +279,4 @@ export class ViewerPageComponent implements OnInit {
       },
     };
   }
-
 }

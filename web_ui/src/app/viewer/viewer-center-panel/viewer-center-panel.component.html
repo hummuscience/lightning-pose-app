@@ -47,40 +47,5 @@
     }
   </div>
 
-  @if (timelineRows().length > 0) {
-    <div class="px-4 pt-2">
-      <div class="flex items-center gap-2 mb-1">
-        <span class="text-xs opacity-60">Threshold:</span>
-        <input
-          type="number"
-          class="input input-xs w-16"
-          min="0"
-          max="1"
-          step="0.05"
-          [value]="confidenceThreshold()"
-          (change)="onThresholdChange($event)"
-        />
-        <button
-          class="btn btn-xs btn-soft"
-          (click)="navigateToLowConfidence(-1)"
-        >
-          Prev
-        </button>
-        <button
-          class="btn btn-xs btn-soft"
-          (click)="navigateToLowConfidence(1)"
-        >
-          Next
-        </button>
-      </div>
-      <canvas
-        #timelineCanvas
-        class="w-full cursor-pointer rounded"
-        style="height: 48px"
-        (click)="onTimelineClick($event)"
-      ></canvas>
-    </div>
-  }
-
   <app-video-player-controls></app-video-player-controls>
 </div>
